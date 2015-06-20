@@ -2,16 +2,22 @@ var Cron = require('cron').CronJob;
 var Client = require('node-rest-client').Client;
 
 var SCHEDULE_URL = "http://192.168.11.200:8000/api/reserves.json";
-
-var DEBUG_CRON_FORMAT = "*/10 * * * * *";
 var CRON_FORMAT = "0 30 6 * * *";
+var ROOM = "#kapibara";
+
+var DEBUG = false;
+
+if(DEBUG){
+    CRON_FORMAT = "*/10 * * * * *";
+    ROOM = "#memo";
+}
 
 module.exports = function(robot){
     var job = new Cron(CRON_FORMAT, function(){
         postAtnimeList(function(text){
-            robot.send({ room: "#kapibara" }, "今晩の予約済みのアニメは");
-            robot.send({ room: "#kapibara" }, text);
-            robot.send({ room: "#kapibara" }, "だよ！ <!channel>");
+            robot.send({ room: ROOM }, "今晩の予約済みのアニメは");
+            robot.send({ room: ROOM }, text);
+            robot.send({ room: ROOM }, "だよ！ <!channel>");
         });
     }, null, true, "Asia/Tokyo");
 };
@@ -25,7 +31,7 @@ var postAtnimeList = function(callback){
             return e.start < oneDayAgo;
         }).map(function(e){
             var time = new Date(e.start);
-            return formatedDateString(time) + e.fullTitle;
+            return formatedDateString(time) + "\t" + e.fullTitle;
         }).join("\n");
         callback(todayAnime);
     });

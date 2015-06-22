@@ -1,3 +1,4 @@
 #!/bin/sh
-source ./config/token
+dir_path="`dirname \"$0\"`"
+source $dir_path/../config/token
 HUBOT_SLACK_TOKEN=$SLACK_TOKEN ./bin/hubot --adapter slack

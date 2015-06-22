@@ -1,5 +1,5 @@
 #!/bin/sh
-SLACK_TOKEN=""
+source ./config/token
 TEXT=$1
 curl -s -X POST -d "token=$SLACK_TOKEN&channel=%23kapibara&text=$TEXT&username=anikapi-san&icon_emoji=%3Aanikapi%3A&pretty=1" \
     https://slack.com/api/chat.postMessage > /dev/null

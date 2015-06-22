@@ -1,1 +1,3 @@
-HUBOT_SLACK_TOKEN= ./bin/hubot --adapter slack
+#!/bin/sh
+source ./config/token
+HUBOT_SLACK_TOKEN=$SLACK_TOKEN ./bin/hubot --adapter slack

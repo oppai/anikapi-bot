@@ -1,3 +1,4 @@
+"use strict";
 var Cron = require('cron').CronJob;
 var Client = require('node-rest-client').Client;
 var Exec = require('child_process').exec;

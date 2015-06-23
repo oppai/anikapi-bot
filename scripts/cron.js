@@ -33,7 +33,7 @@ module.exports = function(robot){
 
     var n_job = new Cron(NIGHT_CRON_FORMAT, function(){
             robot.send({ room: ROOM }, "アニメサーバをつけるよ！");
-            shutdown(function(){
+            wakeonlan(function(){
                 robot.send({ room: ROOM }, "anikapiをつけたよ！");
             }, function(){
                 robot.send({ room: ROOM }, "anikapiを付けられなかったよ…");

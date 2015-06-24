@@ -18,7 +18,7 @@ if(DEBUG){
 
 module.exports = function(robot){
     var m_job = new Cron(MORNING_CRON_FORMAT, function(){
-        postAtnimeList(function(text){
+        postAnimeList(function(text){
             robot.send({ room: ROOM }, "今晩の予約済みのアニメは");
             robot.send({ room: ROOM }, text);
             robot.send({ room: ROOM }, "だよ！ <!channel>");
@@ -41,8 +41,8 @@ module.exports = function(robot){
     }, null, true, "Asia/Tokyo");
 };
 
-var postAtnimeList = function(callback){
-    client = new Client();
+var postAnimeList = function(callback){
+    var client = new Client();
     client.get(SCHEDULE_URL,function(data, response){
         var json = JSON.parse(data.toString());
         var oneDayAgo = Date.now() + (24 * 60 * 60 * 1000);

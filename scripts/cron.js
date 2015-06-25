@@ -6,14 +6,15 @@ var Exec = require('child_process').exec;
 var SCHEDULE_URL = "http://192.168.11.200:8000/api/reserves.json";
 var MORNING_CRON_FORMAT = "0 30 6 * * *";
 var NIGHT_CRON_FORMAT   = "0 50 21 * * *";
-var ROOM = "#kapibara";
 var password = '';
+var ROOM = "#anime";
 
 var DEBUG = false;
 
 if(DEBUG){
-    CRON_FORMAT = "*/10 * * * * *";
-    ROOM = "#memo";
+    MORNING_CRON_FORMAT = "*/10 * * * * *";
+    NIGHT_CRON_FORMAT = "* * * * *";
+    ROOM = "#anime";
 }
 
 module.exports = function(robot){

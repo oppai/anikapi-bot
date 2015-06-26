@@ -1,4 +1,11 @@
 #!/bin/sh
 dir_path="`dirname \"$0\"`"
 source $dir_path/../config/token
-HUBOT_SLACK_TOKEN=$SLACK_TOKEN ./bin/hubot --adapter slack
+if [[ $1 == "dev" ]]; then
+  HUBOT_SLACK_TOKEN=$SLACK_TOKEN ./bin/hubot_dev --adapter slack;
+elif [[ $1 == "stop" ]] ; then
+  forever stopall
+else
+  HUBOT_SLACK_TOKEN=$SLACK_TOKEN ./bin/hubot --adapter slack
+fi
+

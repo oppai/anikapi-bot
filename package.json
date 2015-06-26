@@ -6,6 +6,7 @@
   "description": "anime notifier for anikapi",
   "dependencies": {
     "cron": "^1.0.9",
+    "forever": "^0.14.1",
     "hubot": "^2.13.2",
     "hubot-diagnostics": "0.0.1",
     "hubot-google-images": "^0.1.5",

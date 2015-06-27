@@ -34,14 +34,19 @@ module.exports = function(robot){
             robot.send({ room: ROOM }, "anikapiを止められなかったよ…");
         });
     };
-
-    var m_job = new Cron(MORNING_CRON_FORMAT, function(){
+    var todaysAnime = function(be_stop){
         postAnimeList(function(text){
             robot.send({ room: ROOM }, "今晩の予約済みのアニメは");
             robot.send({ room: ROOM }, text);
             robot.send({ room: ROOM }, "だよ！ <!channel>");
-            goodnight();
+            if(be_stop){
+                goodnight();
+            }
         });
+    };
+
+    var m_job = new Cron(MORNING_CRON_FORMAT, function(){
+        todaysAnime(true);
     }, null, true, "Asia/Tokyo");
 
     var n_job = new Cron(NIGHT_CRON_FORMAT, function(){
@@ -55,7 +60,9 @@ module.exports = function(robot){
     robot.respond(/おやすみ/i,function(msg){
         goodnight();
     });
-
+    robot.respond(/今日のアニメ/i,function(msg){
+        todaysAnime();
+    });
 };
 
 var postAnimeList = function(callback){

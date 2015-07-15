@@ -69,9 +69,10 @@ var postAnimeList = function(callback){
     var client = new Client();
     client.get(SCHEDULE_URL,function(data, response){
         var json = JSON.parse(data.toString());
-        var oneDayAgo = Date.now() + (24 * 60 * 60 * 1000);
+        var today = Date.now();
+        var oneDayAgo = today + (24 * 60 * 60 * 1000);
         var todayAnime = json.filter(function(e){
-            return e.start < oneDayAgo;
+            return today < e.start && e.start < oneDayAgo;
         }).map(function(e){
             var time = new Date(e.start);
             return formatedDateString(time) + "\t" + e.fullTitle;

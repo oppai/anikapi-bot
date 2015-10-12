@@ -4,7 +4,7 @@ var Client = require('node-rest-client').Client;
 var Exec = require('child_process').exec;
 
 var HOST = "192.168.11.200";
-var SSH_CMD = "ssh kodam@"+HOST+" -A -i /Users/murayamahiroaki/.ssh/kapi_rsa";
+var SSH_CMD = "ssh -oStrictHostKeyChecking=no kodam@"+HOST+" -A -i /Users/murayamahiroaki/.ssh/kapi_rsa";
 var SCHEDULE_URL = "http://" + HOST + ":8000/api/reserves.json";
 var MORNING_CRON_FORMAT = "0 30 6 * * *";
 var NIGHT_CRON_FORMAT   = "0 50 21 * * *";

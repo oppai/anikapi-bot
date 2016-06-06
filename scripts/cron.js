@@ -16,8 +16,8 @@ var ROOM = "#anime";
 var DEBUG = false;
 
 if(DEBUG){
-    MORNING_CRON_FORMAT = "*/10 * * * * *";
-    NIGHT_CRON_FORMAT = "* * * * *";
+    MORNING_CRON_FORMAT = "*/5 * * * * *";
+    //NIGHT_CRON_FORMAT = "*/5 * * * *";
     ROOM = "#anime";
 }
 
@@ -38,16 +38,22 @@ module.exports = function(robot){
     };
     var todaysAnime = function(be_stop){
         postAnimeList(function(text){
-            robot.send({ room: ROOM }, "今晩の予約済みのアニメは");
-            robot.send({ room: ROOM }, text);
-            robot.send({ room: ROOM }, "だよ！ <!channel>");
+            robot.send({ room: ROOM }, "今晩の予約済みのアニメは\n"+text+"\nだよ！<!channel>");
             if(be_stop){
                 goodnight();
             }
         });
     };
+    var diskCheck = function(){
+        diskUsed(function(){
+            robot.send({ room: ROOM }, "ディスクの空き容量がやばいよ！！<!channel>");
+        }, function(){
+            robot.send({ room: ROOM }, "ディスクの空き容量は問題ないよ");
+        });
+    };
 
     var m_job = new Cron(MORNING_CRON_FORMAT, function(){
+        diskCheck();
         todaysAnime(true);
     }, null, true, "Asia/Tokyo");
 
@@ -64,6 +70,9 @@ module.exports = function(robot){
     });
     robot.respond(/今日のアニメ/i,function(msg){
         todaysAnime();
+    });
+    robot.respond(/容量チェック/i,function(msg){
+        diskCheck();
     });
 };
 
@@ -82,6 +91,20 @@ var postAnimeList = function(callback){
         callback(todayAnime);
     });
 };
+
+var diskUsed = function(sc, ec) {
+    Exec(SSH_CMD+' "df -H | grep \'/dev/\' | grep -v boot" | awk \'{print $5}\' | tr -d %', function (error, stdout, stderr) {
+        var isLimited = stdout.split('\n').some(function(e){
+            return e >= 85
+        });
+        if(!error && isLimited){
+            sc();
+        }else{
+            console.log(error);
+            ec();
+        }
+    });
+}
 
 var formatedDateString = function(date) {
     return  date.getDate() + "日 " + date.getHours() + "時" + date.getMinutes() + "分";

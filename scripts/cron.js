@@ -6,7 +6,7 @@ var Exec = require('child_process').exec;
 var USER = ""
 var RSA_PATH = ""
 var HOST = "192.168.11.200";
-var SSH_CMD = "ssh -oStrictHostKeyChecking=no "+USER+"@"+HOST+" -A -i "+RSA_PATH;
+var SSH_CMD = "ssh -oConnectTimeout=5 -oStrictHostKeyChecking=no "+USER+"@"+HOST+" -A -i "+RSA_PATH;
 var SCHEDULE_URL = "http://" + HOST + ":8000/api/reserves.json";
 var MORNING_CRON_FORMAT = "0 30 6 * * *";
 var NIGHT_CRON_FORMAT   = "0 50 21 * * *";
